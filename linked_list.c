@@ -4,7 +4,7 @@
 
 typedef struct list_node {
     TYPE data;
-    *next struct list_node;
+    struct list_node *next;
 } list_node;
 
 typedef struct list {
@@ -13,7 +13,7 @@ typedef struct list {
 } list;
 
 list* create() {
-    l = (list*)malloc(sizeof(list));
+    list* l = (list*)malloc(sizeof(list));
     if (l == NULL) {
         return NULL;
     }
@@ -24,7 +24,7 @@ list* create() {
 
 int destroy(list* l) {
     for (int i=0; i<l->length; i++) {
-        TYPE* temp = l->data;
+        list_node* temp = l->data;
         l->data = temp->next;
         free(temp);
     }
@@ -33,14 +33,14 @@ int destroy(list* l) {
 }
 
 int insert(list* l, TYPE s) {
-    temp = (list_node*)malloc(sizeof(list_node));
+    list_node* temp = (list_node*)malloc(sizeof(list_node));
     if (temp == NULL) {
         return -1;
     }
     temp->data = s;
     temp->next = NULL;
 
-    TYPE* tail = l->data;
+    list_node* tail = l->data;
     while(tail->next != NULL) {
         tail = tail->next;
     }
@@ -49,7 +49,7 @@ int insert(list* l, TYPE s) {
     return 0;
 }
 
-TYPE* getelem(list* l, long idx) {
+list_node* getelem(list* l, long idx) {
     if (idx <= l->length-1) {
         list_node* target = l->data;
         for (int i=0; i<=idx; i++) {
@@ -96,7 +96,7 @@ int isempty(list* l) {
 }
 
 int search(list* l, TYPE s) {
-    node_list* temp = l->data;
+    list_node* temp = l->data;
     int i = 0;
     while(temp->next != NULL) {
         if (temp->data == s) {
